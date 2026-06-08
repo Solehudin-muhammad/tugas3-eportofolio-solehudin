@@ -4,33 +4,940 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Mohammad Solehudin - Mahasiswa Ilmu Komunikasi Universitas Terbuka dengan pengalaman 5+ tahun di bidang Customer Service & Sales">
-    <meta name="keywords" content="Mohammad Solehudin, Portfolio, Customer Service, Sales, Communication">
-    <meta name="author" content="Mohammad Solehudin">
-    <meta property="og:title" content="Mohammad Solehudin - E-Portfolio">
-    <meta property="og:description" content="Professional Portfolio - Communication Student & Customer Service Expert">
-    <meta property="og:type" content="website">
     <title>Mohammad Solehudin | E-Portfolio</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E3A8A;
+            --primary-light: #3B82F6;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --bg-tertiary: #F1F5F9;
+            --bg-card: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-tertiary: #94A3B8;
+            --border: #E2E8F0;
+            --gradient-primary: linear-gradient(135deg, #2563EB 0%, #1E3A8A 100%);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --bg-card: #1E293B;
+            --text-primary: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --text-tertiary: #64748B;
+            --border: #334155;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+        input, textarea { font-family: inherit; font-size: inherit; }
+
+        ::selection { background: var(--primary); color: white; }
+
+        /* Loading Screen */
+        .loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .loader.hidden { opacity: 0; visibility: hidden; }
+        .loader-spinner {
+            width: 50px; height: 50px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] .navbar {
+            background: rgba(15, 23, 42, 0.85);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-link {
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-radius: var(--radius-full);
+            transition: all 0.2s ease;
+        }
+        .nav-link:hover {
+            color: var(--primary);
+            background: rgba(37, 99, 235, 0.08);
+        }
+        .theme-toggle {
+            width: 44px; height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            background: var(--bg-tertiary);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle:hover { background: var(--primary); }
+        .theme-toggle:hover svg { color: white; }
+        .theme-toggle svg { width: 20px; height: 20px; color: var(--text-secondary); transition: color 0.2s ease; }
+        .sun-icon { display: block; }
+        .moon-icon { display: none; }
+        [data-theme="dark"] .sun-icon { display: none; }
+        [data-theme="dark"] .moon-icon { display: block; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; width: 44px; height: 44px; align-items: center; justify-content: center; }
+        .hamburger span { width: 24px; height: 2px; background: var(--text-primary); border-radius: 2px; transition: all 0.2s ease; }
+
+        @media (max-width: 968px) {
+            .hamburger { display: flex; }
+            .nav-menu {
+                position: fixed;
+                top: 72px; left: 0; right: 0;
+                background: var(--bg-primary);
+                padding: 20px;
+                flex-direction: column;
+                gap: 8px;
+                border-bottom: 1px solid var(--border);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            .nav-menu.active { transform: translateY(0); opacity: 1; visibility: visible; }
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 72px;
+        }
+        .hero-bg { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 20s ease-in-out infinite;
+        }
+        .orb-1 {
+            width: 600px; height: 600px;
+            background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+            top: -200px; right: -200px;
+        }
+        .orb-2 {
+            width: 400px; height: 400px;
+            background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+            bottom: -100px; left: -100px;
+            animation-delay: -7s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: var(--radius-full);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+        .badge-dot {
+            width: 8px; height: 8px;
+            background: #22C55E;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .title-line { display: block; }
+        .title-line.accent { color: var(--primary); }
+        .hero-subtitle {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .hero-description {
+            font-size: 16px;
+            color: var(--text-tertiary);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .stat-item { display: flex; flex-direction: column; gap: 4px; }
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+        }
+        .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+        .btn svg { width: 18px; height: 18px; }
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+        }
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .hero-image { position: relative; }
+        .image-frame {
+            position: relative;
+            aspect-ratio: 4/5;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+        .image-glow {
+            position: absolute;
+            inset: -20px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-xl);
+            filter: blur(40px);
+            opacity: 0.4;
+            z-index: -1;
+        }
+        .profile-placeholder {
+            width: 100%; height: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            color: var(--text-tertiary);
+        }
+        .profile-placeholder svg { width: 100px; height: 100px; stroke: var(--text-tertiary); }
+
+        @media (max-width: 968px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; }
+            .hero-stats { justify-content: center; }
+            .hero-cta { justify-content: center; }
+            .hero-image { display: none; }
+        }
+        @media (max-width: 640px) {
+            .hero-stats { flex-direction: column; gap: 20px; align-items: center; }
+            .hero-cta { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+
+        /* Sections */
+        .section { padding: 100px 0; position: relative; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* About */
+        .about { background: var(--bg-secondary); }
+        .about-grid { display: grid; grid-template-columns: 400px 1fr; gap: 60px; align-items: center; }
+        .about-image { position: relative; }
+        .image-card {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+        .about-placeholder {
+            aspect-ratio: 3/4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-tertiary);
+        }
+        .about-placeholder svg { width: 120px; height: 120px; stroke: var(--text-tertiary); }
+        .experience-badge {
+            position: absolute;
+            bottom: 24px; left: 24px;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            padding: 16px 24px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        [data-theme="dark"] .experience-badge { background: rgba(30, 41, 59, 0.9); }
+        .exp-number {
+            display: block;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .exp-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .about-content { display: flex; flex-direction: column; gap: 32px; }
+        .about-text p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+        .about-highlights { display: flex; flex-direction: column; gap: 16px; }
+        .highlight-item {
+            display: flex;
+            gap: 16px;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+        .highlight-item:hover { border-color: var(--primary); transform: translateX(8px); }
+        .highlight-icon {
+            width: 48px; height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+        }
+        .highlight-icon svg { width: 24px; height: 24px; color: var(--primary); }
+        .highlight-text h4 { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+        .highlight-text p { font-size: 13px; color: var(--text-tertiary); }
+
+        @media (max-width: 968px) {
+            .about-grid { grid-template-columns: 1fr; gap: 40px; }
+            .about-image { max-width: 400px; margin: 0 auto; }
+        }
+
+        /* Education */
+        .education-timeline { position: relative; max-width: 800px; margin: 0 auto; }
+        .timeline-line {
+            position: absolute;
+            left: 24px; top: 0; bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        .timeline-item { position: relative; padding-left: 80px; padding-bottom: 40px; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-marker {
+            position: absolute;
+            left: 0; top: 0;
+            width: 50px; height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+        }
+        .timeline-marker svg { width: 24px; height: 24px; color: white; }
+        .timeline-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            transition: all 0.2s ease;
+        }
+        .timeline-card:hover { border-color: var(--primary); box-shadow: var(--shadow-lg); }
+        .timeline-year {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            margin-bottom: 16px;
+        }
+        .timeline-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .timeline-subtitle { font-size: 15px; color: var(--text-secondary); margin-bottom: 20px; }
+        .focus-areas h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
+        .focus-areas ul { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .focus-areas li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding-left: 20px;
+            position: relative;
+        }
+        .focus-areas li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 8px;
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        /* Experience */
+        .experience { background: var(--bg-secondary); }
+        .experience-timeline { position: relative; max-width: 900px; margin: 0 auto; }
+        .experience-timeline .timeline-line { left: 0; }
+        .experience-timeline .timeline-item { padding-left: 60px; }
+        .experience-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            transition: all 0.2s ease;
+        }
+        .experience-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .exp-company { display: flex; gap: 16px; align-items: flex-start; }
+        .company-logo {
+            width: 56px; height: 56px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .company-info h3 { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+        .company-info p { font-size: 14px; color: var(--text-secondary); }
+        .exp-period {
+            padding: 6px 14px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+        }
+        .exp-responsibilities { display: flex; flex-wrap: wrap; gap: 8px; }
+        .exp-responsibilities li {
+            padding: 8px 16px;
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--text-secondary);
+            font-size: 13px;
+            border-radius: var(--radius-full);
+            transition: all 0.2s ease;
+        }
+        .exp-responsibilities li:hover { background: var(--primary); color: white; }
+
+        /* Skills */
+        .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .skill-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            transition: all 0.2s ease;
+        }
+        .skill-category:hover { border-color: var(--primary); box-shadow: var(--shadow-lg); }
+        .category-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .category-icon {
+            width: 48px; height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            background: rgba(37, 99, 235, 0.1);
+        }
+        .category-icon svg { width: 24px; height: 24px; color: var(--primary); }
+        .category-header h3 { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .skill-list { display: flex; flex-direction: column; gap: 20px; }
+        .skill-item { display: flex; flex-direction: column; gap: 8px; }
+        .skill-info { display: flex; justify-content: space-between; align-items: center; }
+        .skill-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+        .skill-percent { font-size: 13px; font-weight: 600; color: var(--primary); }
+        .skill-bar {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+        .skill-progress {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            width: 0;
+            transition: width 1.5s ease;
+        }
+        .soft-skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .soft-skill-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+        .soft-skill-item:hover { background: rgba(37, 99, 235, 0.1); transform: translateY(-2px); }
+        .soft-skill-item svg { width: 18px; height: 18px; color: var(--primary); }
+        .soft-skill-item span { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+        .language-list { display: flex; flex-direction: column; gap: 20px; }
+        .language-item { display: flex; flex-direction: column; gap: 8px; }
+        .lang-info { display: flex; justify-content: space-between; align-items: center; }
+        .lang-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+        .lang-level { font-size: 12px; color: var(--text-tertiary); }
+        .lang-dots { display: flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; background: var(--bg-tertiary); border-radius: 50%; }
+        .dot.filled { background: var(--primary); }
+
+        @media (max-width: 968px) {
+            .skills-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Certifications */
+        .certifications { background: var(--bg-secondary); }
+        .cert-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .cert-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: all 0.2s ease;
+        }
+        .cert-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .cert-icon {
+            width: 56px; height: 56px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cert-icon svg { width: 28px; height: 28px; color: white; }
+        .cert-content h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; line-height: 1.4; }
+        .cert-issuer { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
+        .cert-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22C55E;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+        }
+        .cert-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            margin-top: auto;
+        }
+        .cert-btn:hover { background: var(--primary); color: white; }
+        .cert-btn svg { width: 16px; height: 16px; }
+
+        @media (max-width: 968px) {
+            .cert-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .cert-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Portfolio */
+        .portfolio-filter { display: flex; justify-content: center; gap: 12px; margin-bottom: 48px; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-full);
+            transition: all 0.2s ease;
+        }
+        .filter-btn:hover, .filter-btn.active { background: var(--primary); color: white; }
+        .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .portfolio-item { transition: all 0.3s ease; }
+        .portfolio-item.hidden { display: none; }
+        .portfolio-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .portfolio-card:hover { border-color: var(--primary); transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+        .portfolio-image { position: relative; aspect-ratio: 16/10; overflow: hidden; }
+        .portfolio-placeholder {
+            width: 100%; height: 100%;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .portfolio-placeholder svg { width: 48px; height: 48px; color: var(--text-tertiary); }
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(37, 99, 235, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .portfolio-card:hover .portfolio-overlay { opacity: 1; }
+        .view-btn {
+            width: 56px; height: 56px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.8);
+            transition: transform 0.2s ease;
+        }
+        .portfolio-card:hover .view-btn { transform: scale(1); }
+        .view-btn svg { width: 24px; height: 24px; color: var(--primary); }
+        .portfolio-content { padding: 24px; }
+        .portfolio-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            margin-bottom: 12px;
+        }
+        .portfolio-content h3 { font-size: 17px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+        .portfolio-content p { font-size: 14px; color: var(--text-tertiary); line-height: 1.6; }
+
+        @media (max-width: 968px) {
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Goals */
+        .goals { background: var(--bg-secondary); }
+        .goals-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .goal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .goal-card:hover { border-color: var(--primary); transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+        .goal-icon {
+            width: 72px; height: 72px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+        }
+        .goal-icon svg { width: 32px; height: 32px; color: white; }
+        .goal-card h3 { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+        .goal-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+        @media (max-width: 968px) {
+            .goals-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .goals-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        .contact-intro h3 { font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+        .contact-intro p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 32px; }
+        .contact-details { display: flex; flex-direction: column; gap: 20px; margin-bottom: 32px; }
+        .contact-item { display: flex; gap: 16px; align-items: flex-start; }
+        .contact-icon {
+            width: 48px; height: 48px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .contact-icon svg { width: 22px; height: 22px; color: var(--primary); }
+        .contact-text { display: flex; flex-direction: column; gap: 4px; }
+        .contact-label { font-size: 12px; color: var(--text-tertiary); text-transform: uppercase; }
+        .contact-value { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+        a.contact-value:hover { color: var(--primary); }
+        .social-links { display: flex; gap: 12px; }
+        .social-link {
+            width: 48px; height: 48px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .social-link:hover { background: var(--primary); }
+        .social-link svg { width: 22px; height: 22px; color: var(--text-secondary); transition: color 0.2s ease; }
+        .social-link:hover svg { color: white; }
+        .contact-form-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+        }
+        .contact-form { display: flex; flex-direction: column; gap: 24px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+        .form-group input, .form-group textarea {
+            padding: 14px 18px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-tertiary); }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+
+        @media (max-width: 968px) {
+            .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border);
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .footer-quote { font-size: 14px; color: var(--text-tertiary); font-style: italic; }
+        .footer-links { display: flex; gap: 32px; }
+        .footer-links a { font-size: 14px; color: var(--text-secondary); transition: color 0.2s ease; }
+        .footer-links a:hover { color: var(--primary); }
+        .footer-bottom { padding-top: 30px; border-top: 1px solid var(--border); text-align: center; }
+        .footer-bottom p { font-size: 13px; color: var(--text-tertiary); }
+
+        @media (max-width: 640px) {
+            .footer-content { flex-direction: column; text-align: center; }
+            .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            width: 50px; height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5); }
+        .back-to-top svg { width: 24px; height: 24px; color: white; }
+    </style>
 </head>
 <body>
     <!-- Loading Screen -->
     <div id="loader" class="loader">
-        <div class="loader-content">
-            <div class="loader-spinner"></div>
-            <span class="loader-text">Loading...</span>
-        </div>
+        <div class="loader-spinner"></div>
     </div>
 
     <!-- Navigation -->
     <nav id="navbar" class="navbar">
         <div class="nav-container">
-            <a href="#hero" class="nav-logo">
-                <span class="logo-text">MS</span>
-            </a>
+            <a href="#hero" class="logo-text">MS</a>
             <ul id="nav-menu" class="nav-menu">
                 <li><a href="#about" class="nav-link">Tentang</a></li>
                 <li><a href="#education" class="nav-link">Pendidikan</a></li>
@@ -39,7 +946,7 @@
                 <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
                 <li><a href="#contact" class="nav-link">Kontak</a></li>
             </ul>
-            <div class="nav-actions">
+            <div style="display: flex; align-items: center; gap: 12px;">
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
                     <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -49,10 +956,8 @@
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
                 </button>
-                <button id="hamburger" class="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <button id="hamburger" class="hamburger" aria-label="Menu">
+                    <span></span><span></span><span></span>
                 </button>
             </div>
         </div>
@@ -63,29 +968,23 @@
         <div class="hero-bg">
             <div class="gradient-orb orb-1"></div>
             <div class="gradient-orb orb-2"></div>
-            <div class="gradient-orb orb-3"></div>
-            <div class="hero-grid"></div>
         </div>
         <div class="hero-container">
             <div class="hero-content">
                 <div class="hero-badge reveal">
-                    <span class="badge-dot"></span>
-                    Open to Work
+                    <span class="badge-dot"></span> Open to Work
                 </div>
                 <h1 class="hero-title reveal">
                     <span class="title-line">Mohammad</span>
                     <span class="title-line accent">Solehudin</span>
                 </h1>
-                <p class="hero-subtitle reveal">
-                    Communication Student | Customer Service & Sales Professional | Digital Communication Enthusiast
-                </p>
-                <p class="hero-description reveal">
-                    Mahasiswa Ilmu Komunikasi Universitas Terbuka dengan pengalaman lebih dari 5 tahun dalam bidang customer service, sales, dan komunikasi pelanggan. Memiliki kemampuan komunikasi interpersonal, pelayanan pelanggan, negosiasi, dan pengembangan hubungan pelanggan.
-                </p>
+                <p class="hero-subtitle reveal">Communication Student | Customer Service & Sales Professional | Digital Communication Enthusiast</p>
+                <p class="hero-description reveal">Mahasiswa Ilmu Komunikasi Universitas Terbuka dengan pengalaman lebih dari 5 tahun dalam bidang customer service, sales, dan komunikasi pelanggan.</p>
+                
+                <!-- STATISTIK YANG SUDAH DIPERBAIKI -->
                 <div class="hero-stats reveal">
                     <div class="stat-item">
                         <span class="stat-number" data-target="5">0</span>
-                        <span class="stat-suffix">+</span>
                         <span class="stat-label">Tahun Pengalaman</span>
                     </div>
                     <div class="stat-item">
@@ -97,39 +996,24 @@
                         <span class="stat-label">Perusahaan</span>
                     </div>
                 </div>
+                
                 <div class="hero-cta reveal">
                     <a href="#" class="btn btn-primary">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
                         Download CV
                     </a>
-                    <a href="#contact" class="btn btn-secondary">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg>
-                        Hubungi Saya
-                    </a>
+                    <a href="#contact" class="btn btn-secondary">Hubungi Saya</a>
                 </div>
             </div>
             <div class="hero-image reveal">
                 <div class="image-frame">
                     <div class="image-glow"></div>
                     <div class="profile-placeholder">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                        <span>Mohammad Solehudin</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span>Foto Profil</span>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="mouse">
-                <div class="wheel"></div>
-            </div>
-            <span>Scroll</span>
         </div>
     </section>
 
@@ -144,10 +1028,7 @@
                 <div class="about-image reveal">
                     <div class="image-card">
                         <div class="about-placeholder">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </div>
                         <div class="experience-badge">
                             <span class="exp-number">5+</span>
@@ -158,44 +1039,16 @@
                 <div class="about-content">
                     <div class="about-text reveal">
                         <p>Saya adalah mahasiswa Ilmu Komunikasi Universitas Terbuka yang memiliki pengalaman profesional dalam bidang pelayanan pelanggan dan penjualan. Selama lebih dari lima tahun bekerja di industri retail, saya mengembangkan kemampuan komunikasi, negosiasi, problem solving, dan customer relationship management.</p>
-                        <p>Saya memiliki minat besar pada bidang komunikasi digital, public relations, dan marketing communication. Dengan kombinasi pengalaman praktis dan pengetahuan akademis, saya siap berkontribusi dalam dunia komunikasi profesional.</p>
+                        <p>Saya memiliki minat besar pada bidang komunikasi digital, public relations, dan marketing communication.</p>
                     </div>
                     <div class="about-highlights reveal">
                         <div class="highlight-item">
-                            <div class="highlight-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                </svg>
-                            </div>
-                            <div class="highlight-text">
-                                <h4>Customer Service Expert</h4>
-                                <p>Terampil dalam menangani berbagai kebutuhan pelanggan</p>
-                            </div>
+                            <div class="highlight-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                            <div class="highlight-text"><h4>Customer Service Expert</h4><p>Terampil dalam menangani berbagai kebutuhan pelanggan</p></div>
                         </div>
                         <div class="highlight-item">
-                            <div class="highlight-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                </svg>
-                            </div>
-                            <div class="highlight-text">
-                                <h4>Sales Professional</h4>
-                                <p>Berpengalaman dalam penjualan dan negosiasi</p>
-                            </div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="highlight-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                </svg>
-                            </div>
-                            <div class="highlight-text">
-                                <h4>Communication Enthusiast</h4>
-                                <p>Antusias dalam komunikasi digital dan PR</p>
-                            </div>
+                            <div class="highlight-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                            <div class="highlight-text"><h4>Sales Professional</h4><p>Berpengalaman dalam penjualan dan negosiasi</p></div>
                         </div>
                     </div>
                 </div>
@@ -204,7 +1057,7 @@
     </section>
 
     <!-- Education Section -->
-    <section id="education" class="section education">
+    <section id="education" class="section">
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-tag">Pendidikan</span>
@@ -213,12 +1066,7 @@
             <div class="education-timeline">
                 <div class="timeline-line"></div>
                 <div class="timeline-item reveal">
-                    <div class="timeline-marker">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
-                        </svg>
-                    </div>
+                    <div class="timeline-marker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></div>
                     <div class="timeline-content">
                         <div class="timeline-card">
                             <span class="timeline-year">2024 - Sekarang</span>
@@ -256,22 +1104,16 @@
                         <div class="experience-card">
                             <div class="exp-header">
                                 <div class="exp-company">
-                                    <div class="company-logo">
-                                        <span>LDI</span>
-                                    </div>
-                                    <div class="company-info">
-                                        <h3>PT Luggage Distributor Indonesia</h3>
-                                        <p>Sales Assistant (Lojel & Bagasi)</p>
-                                    </div>
+                                    <div class="company-logo">LDI</div>
+                                    <div class="company-info"><h3>PT Luggage Distributor Indonesia</h3><p>Sales Assistant (Lojel & Bagasi)</p></div>
                                 </div>
                                 <span class="exp-period">2022 - 2025</span>
                             </div>
                             <ul class="exp-responsibilities">
-                                <li>Customer service excellence</li>
-                                <li>Product knowledge expert</li>
-                                <li>Upselling & cross-selling</li>
+                                <li>Customer service</li>
+                                <li>Product knowledge</li>
+                                <li>Upselling</li>
                                 <li>Administrasi penjualan</li>
-                                <li>Analisis penjualan</li>
                             </ul>
                         </div>
                     </div>
@@ -282,13 +1124,8 @@
                         <div class="experience-card">
                             <div class="exp-header">
                                 <div class="exp-company">
-                                    <div class="company-logo">
-                                        <span>HM</span>
-                                    </div>
-                                    <div class="company-info">
-                                        <h3>PT Harirodama Mandiri</h3>
-                                        <p>Sales Assistant (Ocean Pacific & Country Fiesta)</p>
-                                    </div>
+                                    <div class="company-logo">HM</div>
+                                    <div class="company-info"><h3>PT Harirodama Mandiri</h3><p>Sales Assistant (Ocean Pacific)</p></div>
                                 </div>
                                 <span class="exp-period">2018 - 2022</span>
                             </div>
@@ -296,7 +1133,7 @@
                                 <li>Pelayanan pelanggan</li>
                                 <li>Penjualan produk</li>
                                 <li>Administrasi stok</li>
-                                <li>Penataan display toko</li>
+                                <li>Penataan display</li>
                             </ul>
                         </div>
                     </div>
@@ -306,183 +1143,52 @@
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="section skills">
+    <section id="skills" class="section">
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-tag">Keahlian</span>
                 <h2 class="section-title">Kemampuan Profesional</h2>
             </div>
             <div class="skills-grid">
-                <!-- Hard Skills -->
                 <div class="skill-category reveal">
                     <div class="category-header">
-                        <div class="category-icon hard">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                                <line x1="8" y1="21" x2="16" y2="21"></line>
-                                <line x1="12" y1="17" x2="12" y2="21"></line>
-                            </svg>
-                        </div>
+                        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
                         <h3>Hard Skills</h3>
                     </div>
                     <div class="skill-list">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Microsoft Word</span>
-                                <span class="skill-percent">95%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="95"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Microsoft Excel</span>
-                                <span class="skill-percent">90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="90"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Microsoft PowerPoint</span>
-                                <span class="skill-percent">92%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="92"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Customer Service</span>
-                                <span class="skill-percent">98%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="98"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Sales Management</span>
-                                <span class="skill-percent">95%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="95"></div>
-                            </div>
-                        </div>
+                        <div class="skill-item"><div class="skill-info"><span class="skill-name">Microsoft Word</span><span class="skill-percent">95%</span></div><div class="skill-bar"><div class="skill-progress" data-progress="95"></div></div></div>
+                        <div class="skill-item"><div class="skill-info"><span class="skill-name">Microsoft Excel</span><span class="skill-percent">90%</span></div><div class="skill-bar"><div class="skill-progress" data-progress="90"></div></div></div>
+                        <div class="skill-item"><div class="skill-info"><span class="skill-name">Customer Service</span><span class="skill-percent">98%</span></div><div class="skill-bar"><div class="skill-progress" data-progress="98"></div></div></div>
+                        <div class="skill-item"><div class="skill-info"><span class="skill-name">Sales Management</span><span class="skill-percent">95%</span></div><div class="skill-bar"><div class="skill-progress" data-progress="95"></div></div></div>
                     </div>
                 </div>
-
-                <!-- Soft Skills -->
                 <div class="skill-category reveal">
                     <div class="category-header">
-                        <div class="category-icon soft">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                        </div>
+                        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
                         <h3>Soft Skills</h3>
                     </div>
                     <div class="soft-skills-grid">
-                        <div class="soft-skill-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                            <span>Communication</span>
-                        </div>
-                        <div class="soft-skill-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="2" y1="12" x2="22" y2="12"></line>
-                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                            </svg>
-                            <span>Negotiation</span>
-                        </div>
-                        <div class="soft-skill-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                            <span>Teamwork</span>
-                        </div>
-                        <div class="soft-skill-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                                <polyline points="2 17 12 22 22 17"></polyline>
-                                <polyline points="2 12 12 17 22 12"></polyline>
-                            </svg>
-                            <span>Problem Solving</span>
-                        </div>
-                        <div class="soft-skill-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-                            </svg>
-                            <span>Adaptability</span>
-                        </div>
-                        <div class="soft-skill-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                                <line x1="12" y1="19" x2="12" y2="23"></line>
-                                <line x1="8" y1="23" x2="16" y2="23"></line>
-                            </svg>
-                            <span>Public Speaking</span>
-                        </div>
+                        <div class="soft-skill-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>Communication</span></div>
+                        <div class="soft-skill-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg><span>Negotiation</span></div>
+                        <div class="soft-skill-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg><span>Teamwork</span></div>
+                        <div class="soft-skill-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon></svg><span>Problem Solving</span></div>
                     </div>
                 </div>
-
-                <!-- Languages -->
                 <div class="skill-category reveal">
                     <div class="category-header">
-                        <div class="category-icon lang">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="2" y1="12" x2="22" y2="12"></line>
-                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                            </svg>
-                        </div>
+                        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line></svg></div>
                         <h3>Bahasa</h3>
                     </div>
                     <div class="language-list">
-                        <div class="language-item">
-                            <div class="lang-info">
-                                <span class="lang-name">Bahasa Indonesia</span>
-                                <span class="lang-level">Native</span>
-                            </div>
-                            <div class="lang-dots">
-                                <span class="dot filled"></span>
-                                <span class="dot filled"></span>
-                                <span class="dot filled"></span>
-                                <span class="dot filled"></span>
-                                <span class="dot filled"></span>
-                            </div>
-                        </div>
-                        <div class="language-item">
-                            <div class="lang-info">
-                                <span class="lang-name">English</span>
-                                <span class="lang-level">Intermediate</span>
-                            </div>
-                            <div class="lang-dots">
-                                <span class="dot filled"></span>
-                                <span class="dot filled"></span>
-                                <span class="dot filled"></span>
-                                <span class="dot"></span>
-                                <span class="dot"></span>
-                            </div>
-                        </div>
+                        <div class="language-item"><div class="lang-info"><span class="lang-name">Bahasa Indonesia</span><span class="lang-level">Native</span></div><div class="lang-dots"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></div></div>
+                        <div class="language-item"><div class="lang-info"><span class="lang-name">English</span><span class="lang-level">Intermediate</span></div><div class="lang-dots"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></div></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Certifications Section -->
+    <!-- Certifications -->
     <section id="certifications" class="section certifications">
         <div class="container">
             <div class="section-header reveal">
@@ -491,80 +1197,26 @@
             </div>
             <div class="cert-grid">
                 <div class="cert-card reveal">
-                    <div class="cert-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Dasar Microsoft PowerPoint untuk Pemula</h3>
-                        <p class="cert-issuer">Ruang Guru</p>
-                        <span class="cert-badge">Completed</span>
-                    </div>
-                    <button class="cert-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                        View Certificate
-                    </button>
+                    <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                    <div class="cert-content"><h3>Dasar Microsoft PowerPoint untuk Pemula</h3><p class="cert-issuer">Ruang Guru</p><span class="cert-badge">Completed</span></div>
+                    <button class="cert-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View Certificate</button>
                 </div>
                 <div class="cert-card reveal">
-                    <div class="cert-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Tingkat Kemampuan Komunikasi</h3>
-                        <p class="cert-issuer">Ruang Guru</p>
-                        <span class="cert-badge">Completed</span>
-                    </div>
-                    <button class="cert-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                        View Certificate
-                    </button>
+                    <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                    <div class="cert-content"><h3>Tingkat Kemampuan Komunikasi</h3><p class="cert-issuer">Ruang Guru</p><span class="cert-badge">Completed</span></div>
+                    <button class="cert-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View Certificate</button>
                 </div>
                 <div class="cert-card reveal">
-                    <div class="cert-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Strategi Pemasaran Destinasi Pariwisata</h3>
-                        <p class="cert-issuer">Ruang Guru</p>
-                        <span class="cert-badge">Completed</span>
-                    </div>
-                    <button class="cert-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                        View Certificate
-                    </button>
+                    <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                    <div class="cert-content"><h3>Strategi Pemasaran Destinasi Pariwisata</h3><p class="cert-issuer">Ruang Guru</p><span class="cert-badge">Completed</span></div>
+                    <button class="cert-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View Certificate</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="section portfolio">
+    <!-- Portfolio -->
+    <section id="portfolio" class="section">
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-tag">Portfolio</span>
@@ -579,132 +1231,35 @@
                 <div class="portfolio-item reveal" data-category="komunikasi">
                     <div class="portfolio-card">
                         <div class="portfolio-image">
-                            <div class="portfolio-placeholder">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                </svg>
-                            </div>
-                            <div class="portfolio-overlay">
-                                <button class="view-btn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </button>
-                            </div>
+                            <div class="portfolio-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                            <div class="portfolio-overlay"><button class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div>
                         </div>
-                        <div class="portfolio-content">
-                            <span class="portfolio-category">Komunikasi</span>
-                            <h3>Analisis Komunikasi Pembangunan</h3>
-                            <p>Studi mendalam tentang strategi komunikasi pembangunan di Indonesia</p>
-                        </div>
+                        <div class="portfolio-content"><span class="portfolio-category">Komunikasi</span><h3>Analisis Komunikasi Pembangunan</h3><p>Studi mendalam tentang strategi komunikasi pembangunan</p></div>
                     </div>
                 </div>
                 <div class="portfolio-item reveal" data-category="komunikasi">
                     <div class="portfolio-card">
                         <div class="portfolio-image">
-                            <div class="portfolio-placeholder">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                </svg>
-                            </div>
-                            <div class="portfolio-overlay">
-                                <button class="view-btn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </button>
-                            </div>
+                            <div class="portfolio-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                            <div class="portfolio-overlay"><button class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div>
                         </div>
-                        <div class="portfolio-content">
-                            <span class="portfolio-category">Komunikasi</span>
-                            <h3>Manajemen Krisis BCA</h3>
-                            <p>Analisis studi kasus manajemen krisis komunikasi BCA</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="portfolio-item reveal" data-category="komunikasi">
-                    <div class="portfolio-card">
-                        <div class="portfolio-image">
-                            <div class="portfolio-placeholder">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                </svg>
-                            </div>
-                            <div class="portfolio-overlay">
-                                <button class="view-btn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="portfolio-content">
-                            <span class="portfolio-category">Komunikasi</span>
-                            <h3>Literasi Digital</h3>
-                            <p>Makalah tentang pentingnya literasi digital di era modern</p>
-                        </div>
+                        <div class="portfolio-content"><span class="portfolio-category">Komunikasi</span><h3>Manajemen Krisis BCA</h3><p>Analisis studi kasus manajemen krisis komunikasi</p></div>
                     </div>
                 </div>
                 <div class="portfolio-item reveal" data-category="media">
                     <div class="portfolio-card">
                         <div class="portfolio-image">
-                            <div class="portfolio-placeholder">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                    <polyline points="21 15 16 10 5 21"></polyline>
-                                </svg>
-                            </div>
-                            <div class="portfolio-overlay">
-                                <button class="view-btn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </button>
-                            </div>
+                            <div class="portfolio-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle></svg></div>
+                            <div class="portfolio-overlay"><button class="view-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div>
                         </div>
-                        <div class="portfolio-content">
-                            <span class="portfolio-category">Media</span>
-                            <h3>Proposal Kampanye Komunikasi</h3>
-                            <p>Proposal kampanye komunikasi sosial</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="portfolio-item reveal" data-category="media">
-                    <div class="portfolio-card">
-                        <div class="portfolio-image">
-                            <div class="portfolio-placeholder">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                    <polyline points="21 15 16 10 5 21"></polyline>
-                                </svg>
-                            </div>
-                            <div class="portfolio-overlay">
-                                <button class="view-btn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="portfolio-content">
-                            <span class="portfolio-category">Media</span>
-                            <h3>Riset Manajemen Media Massa</h3>
-                            <p>Penelitian tentang manajemen media massa kontemporer</p>
-                        </div>
+                        <div class="portfolio-content"><span class="portfolio-category">Media</span><h3>Proposal Kampanye Komunikasi</h3><p>Proposal kampanye komunikasi sosial</p></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Career Goals Section -->
+    <!-- Goals -->
     <section id="goals" class="section goals">
         <div class="container">
             <div class="section-header reveal">
@@ -713,65 +1268,26 @@
             </div>
             <div class="goals-grid">
                 <div class="goal-card reveal">
-                    <div class="goal-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                    </div>
+                    <div class="goal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
                     <h3>Public Relations Officer</h3>
-                    <p>Mengelola komunikasi dan hubungan publik untuk membangun citra positif organisasi</p>
+                    <p>Mengelola komunikasi dan hubungan publik</p>
                 </div>
                 <div class="goal-card reveal">
-                    <div class="goal-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                            <line x1="8" y1="21" x2="16" y2="21"></line>
-                            <line x1="12" y1="17" x2="12" y2="21"></line>
-                        </svg>
-                    </div>
+                    <div class="goal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect></svg></div>
                     <h3>Corporate Communication</h3>
-                    <p>Menyusun strategi komunikasi korporat yang efektif dan terintegrasi</p>
+                    <p>Menyusun strategi komunikasi korporat</p>
                 </div>
                 <div class="goal-card reveal">
-                    <div class="goal-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg>
-                    </div>
-                    <h3>Customer Relationship Management</h3>
-                    <p>Mengoptimalkan hubungan pelanggan untuk meningkatkan loyalitas dan kepuasan</p>
-                </div>
-                <div class="goal-card reveal">
-                    <div class="goal-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                            <polyline points="2 17 12 22 22 17"></polyline>
-                            <polyline points="2 12 12 17 22 12"></polyline>
-                        </svg>
-                    </div>
+                    <div class="goal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon></svg></div>
                     <h3>Marketing Communication</h3>
-                    <p>Merancang kampanye pemasaran yang kreatif dan berdampak tinggi</p>
-                </div>
-                <div class="goal-card reveal">
-                    <div class="goal-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="2" y1="12" x2="22" y2="12"></line>
-                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                        </svg>
-                    </div>
-                    <h3>Digital Communication Specialist</h3>
-                    <p>Mengelola komunikasi digital dan media sosial untuk mencapai tujuan bisnis</p>
+                    <p>Merancang kampanye pemasaran kreatif</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section contact">
+    <!-- Contact -->
+    <section id="contact" class="section">
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-tag">Kontak</span>
@@ -781,103 +1297,35 @@
                 <div class="contact-info reveal">
                     <div class="contact-intro">
                         <h3>Tertarik untuk berkolaborasi?</h3>
-                        <p>Saya selalu terbuka untuk diskusi dan peluang baru dalam bidang komunikasi dan customer service.</p>
+                        <p>Saya selalu terbuka untuk diskusi dan peluang baru.</p>
                     </div>
                     <div class="contact-details">
                         <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                            </div>
-                            <div class="contact-text">
-                                <span class="contact-label">Nama</span>
-                                <span class="contact-value">Mohammad Solehudin</span>
-                            </div>
+                            <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                            <div class="contact-text"><span class="contact-label">Email</span><a href="mailto:mohammadsolehudin01@gmail.com" class="contact-value">mohammadsolehudin01@gmail.com</a></div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                            </div>
-                            <div class="contact-text">
-                                <span class="contact-label">Email</span>
-                                <a href="mailto:mohammadsolehudin01@gmail.com" class="contact-value">mohammadsolehudin01@gmail.com</a>
-                            </div>
+                            <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"></path></svg></div>
+                            <div class="contact-text"><span class="contact-label">Telepon</span><a href="tel:+6285640680109" class="contact-value">+62 856 4068 0109</a></div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                            </div>
-                            <div class="contact-text">
-                                <span class="contact-label">Telepon</span>
-                                <a href="tel:+6285640680109" class="contact-value">+62 856 4068 0109</a>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                            </div>
-                            <div class="contact-text">
-                                <span class="contact-label">Lokasi</span>
-                                <span class="contact-value">Jakarta, Indonesia</span>
-                            </div>
+                            <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+                            <div class="contact-text"><span class="contact-label">Lokasi</span><span class="contact-value">Jakarta, Indonesia</span></div>
                         </div>
                     </div>
                     <div class="social-links">
-                        <a href="#" class="social-link" aria-label="LinkedIn">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                                <rect x="2" y="9" width="4" height="12"></rect>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
-                        </a>
-                        <a href="mailto:mohammadsolehudin01@gmail.com" class="social-link" aria-label="Email">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </a>
-                        <a href="https://wa.me/6285640680109" class="social-link" aria-label="WhatsApp">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                            </svg>
-                        </a>
+                        <a href="#" class="social-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                        <a href="mailto:mohammadsolehudin01@gmail.com" class="social-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a>
+                        <a href="https://wa.me/6285640680109" class="social-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
                     </div>
                 </div>
                 <div class="contact-form-wrapper reveal">
                     <form id="contact-form" class="contact-form">
-                        <div class="form-group">
-                            <label for="name">Nama Lengkap</label>
-                            <input type="text" id="name" name="name" required placeholder="Masukkan nama Anda">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required placeholder="Masukkan email Anda">
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Subjek</label>
-                            <input type="text" id="subject" name="subject" required placeholder="Subjek pesan">
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Pesan</label>
-                            <textarea id="message" name="message" rows="5" required placeholder="Tulis pesan Anda..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-full">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="22" y1="2" x2="11" y2="13"></line>
-                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                            </svg>
-                            Kirim Pesan
-                        </button>
+                        <div class="form-group"><label>Nama Lengkap</label><input type="text" name="name" required placeholder="Masukkan nama Anda"></div>
+                        <div class="form-group"><label>Email</label><input type="email" name="email" required placeholder="Masukkan email Anda"></div>
+                        <div class="form-group"><label>Subjek</label><input type="text" name="subject" required placeholder="Subjek pesan"></div>
+                        <div class="form-group"><label>Pesan</label><textarea name="message" rows="5" required placeholder="Tulis pesan Anda..."></textarea></div>
+                        <button type="submit" class="btn btn-primary">Kirim Pesan</button>
                     </form>
                 </div>
             </div>
@@ -888,30 +1336,144 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-brand">
-                    <span class="footer-logo">MS</span>
-                    <p class="footer-quote">"Building Communication, Creating Relationships."</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#about">Tentang</a>
-                    <a href="#experience">Pengalaman</a>
-                    <a href="#skills">Keahlian</a>
-                    <a href="#contact">Kontak</a>
-                </div>
+                <div><span class="footer-logo">MS</span><p class="footer-quote">"Building Communication, Creating Relationships."</p></div>
+                <div class="footer-links"><a href="#about">Tentang</a><a href="#experience">Pengalaman</a><a href="#skills">Keahlian</a><a href="#contact">Kontak</a></div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Mohammad Solehudin. All rights reserved.</p>
-            </div>
+            <div class="footer-bottom"><p>2026 Mohammad Solehudin. All rights reserved.</p></div>
         </div>
     </footer>
 
-    <!-- Back to Top Button -->
-    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="18 15 12 9 6 15"></polyline>
-        </svg>
-    </button>
+    <!-- Back to Top -->
+    <button id="back-to-top" class="back-to-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
 
-    <script src="script.js"></script>
+    <script>
+        // Elements
+        const loader = document.getElementById('loader');
+        const navbar = document.getElementById('navbar');
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        const themeToggle = document.getElementById('theme-toggle');
+        const backToTop = document.getElementById('back-to-top');
+        const revealElements = document.querySelectorAll('.reveal');
+        const skillProgressBars = document.querySelectorAll('.skill-progress');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        const contactForm = document.getElementById('contact-form');
+
+        // Loading Screen & Init
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                
+                // Init animations setelah loader hilang
+                initRevealAnimations();
+                animateStats();
+                animateSkillBars();
+                
+            }, 500);
+        });
+
+        // Theme Toggle
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+        initTheme();
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Navigation
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Scroll Effects
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+            if (window.pageYOffset > 500) backToTop.classList.add('visible');
+            else backToTop.classList.remove('visible');
+        });
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // Reveal Animations
+        function initRevealAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+        }
+
+        // ===== FUNGSI ANIMASI STATISTIK YANG DIPERBAIKI =====
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-target'));
+                const duration = 2000; // 2 detik
+                const increment = target / (duration / 16); // 60fps
+                let current = 0;
+                
+                const updateNumber = () => {
+                    current += increment;
+                    if (current < target) {
+                        stat.textContent = Math.floor(current);
+                        requestAnimationFrame(updateNumber);
+                    } else {
+                        stat.textContent = target;
+                    }
+                };
+                
+                // Mulai animasi setelah delay singkat
+                setTimeout(updateNumber, 300);
+            });
+        }
+
+        // Animate Skill Bars
+        function animateSkillBars() {
+            const skillsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.width = entry.target.getAttribute('data-progress') + '%';
+                        skillsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            skillProgressBars.forEach(bar => skillsObserver.observe(bar));
+        }
+
+        // Portfolio Filter
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.getAttribute('data-filter');
+                portfolioItems.forEach(item => {
+                    item.style.display = (filter === 'all' || item.getAttribute('data-category') === filter) ? 'block' : 'none';
+                });
+            });
+        });
+
+        // Contact Form
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Pesan berhasil dikirim! Terima kasih telah menghubungi.');
+            contactForm.reset();
+        });
+    </script>
 </body>
 </html>
